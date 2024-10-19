@@ -24,6 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 def entrypoint():
+    """Script entrypoint function"""
     logging.basicConfig(level=logging.DEBUG)
     cli(sys.argv[1:])
 
@@ -40,6 +41,9 @@ def main(config: Config):
 
 
 def get_target_matches(target: RenderedTargetConfig) -> Iterator[Path]:
+    """
+    Return list of absolute file paths that are matched by target
+    """
     for match in glob.iglob(target.glob, recursive=True):
         path = Path(match)
 
@@ -66,6 +70,9 @@ def get_target_matches(target: RenderedTargetConfig) -> Iterator[Path]:
 
 
 def apply_target_preset(path: Path, target: RenderedTargetConfig, preset: RenderedPresetConfig):
+    """
+    Render presets command for given file and execute it
+    """
     command = preset.command
     context = get_templating_context(path, target, preset)
 
@@ -92,6 +99,13 @@ def run_command(command: str):
 
 
 def get_templating_context(path: Path, target: RenderedTargetConfig, preset: RenderedPresetConfig) -> Dict[str, str]:
+    """
+    Create context dictionary for template rendering.
+
+    :param path: Path that we are creating context for
+    :param target: RenderedTargetConfig
+    :param preset: RenderedPresetConfig
+    """
     stat = path.stat()
 
     custom_variables: Dict[str, str] = {**target.vars, **preset.vars}
@@ -110,6 +124,7 @@ def get_templating_context(path: Path, target: RenderedTargetConfig, preset: Ren
         "ext": path.suffix,
         "parent": str(path.parent),
         "parent_parent": str(path.parent.parent),
+        "name": path.name,
     }
 
     target_variables: Dict[str, str] = {
@@ -134,6 +149,11 @@ def get_templating_context(path: Path, target: RenderedTargetConfig, preset: Ren
 
 
 def cli(argv: List[str]):
+    """
+    Command line parsing and main logic execution in the loop
+
+    :param argv: command line arguments for parsing
+    """
     parser = argparse.ArgumentParser(
         description="File Automation - run templated shell commands for each file matched by pattern."
     )

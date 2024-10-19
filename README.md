@@ -96,6 +96,7 @@ Available variables in `rename` and `command` parameters:
 - `parent_parent` Absolute path to folder that contains folder with matched file
 - `target` Current target name
 - `preset` Current preset name
+- `name` File name (with suffix but without folders)
 
 `vars` from preset and target will be also available. Preset's `vars` will take precedence over any other variables defined.
 

@@ -47,8 +47,8 @@ class TargetConfig(pydantic.BaseModel):
         default_factory=dict,
         description="Optional. Minimum time in seconds that passed since file modification to consider it as match.",
     )
-    min_age_s: int = pydantic.Field(
-        default=60,
+    min_age_s: Optional[int] = pydantic.Field(
+        None,
         ge=0,
         description="Optional. Any additional variables to pass into command template. Will override all other built-in variables.",
     )
@@ -73,6 +73,9 @@ class Config(pydantic.BaseModel):
 
 
 def load_config_file_or_env(file: Optional[Path], env: str) -> Config:
+    """
+    Create Config instance by loading optional `file`, or look it up from env variable.
+    """
     if not file:
         if env not in os.environ:
             raise EnvironmentError(f'Environment variable "{env}" is not defined')
@@ -101,11 +104,14 @@ class RenderedTargetConfig(pydantic.BaseModel):
     exclude_keywords: Set[str] = pydantic.Field(default_factory=set)
     presets: List[RenderedPresetConfig] = pydantic.Field(default_factory=list, min_length=1)
     vars: Dict[str, str] = pydantic.Field(default_factory=dict)
-    min_age_s: int = pydantic.Field(default=60, ge=0)
+    min_age_s: Optional[int] = pydantic.Field(None, ge=0)
 
 
 # Converts human configs into machine configs
 def build_rendered_target_configs(config: Config) -> List[RenderedTargetConfig]:
+    """
+    Return list of RenderedTargetConfig based on Config
+    """
     result: List[RenderedTargetConfig] = []
 
     for target_name, target in config.targets.items():
