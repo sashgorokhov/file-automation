@@ -16,7 +16,8 @@ class PresetConfig(pydantic.BaseModel):
         description='Required. Command will be rendered using variables available in templating context. See "Templating context reference"'
     )
     rename: Optional[str] = pydantic.Field(
-        description='Optional. If your command creates new files, you can specify this parameter that will be used as new file name. Result of rendering this template will be available as "output_path" variable in command template. Command will not run if "output_path" file exists.'
+        default=None,
+        description='Optional. If your command creates new files, you can specify this parameter that will be used as new file name. Result of rendering this template will be available as "output_path" variable in command template. Command will not run if "output_path" file exists.',
     )
     vars: Dict[str, str] = pydantic.Field(
         default_factory=dict,
@@ -29,10 +30,10 @@ class TargetConfig(pydantic.BaseModel):
         description="Required. Pattern for file matching. Supports standard globbing syntax like *, ?, **"
     )
     include_ext: Set[str] = pydantic.Field(
-        default_factory=set, description="Optional. ONLY match files with these extensions."
+        default_factory=set, description="Optional. ONLY match files with these extensions. With dot!"
     )
     exclude_ext: Set[str] = pydantic.Field(
-        default_factory=set, description="Optional. Exclude files that have these extensions."
+        default_factory=set, description="Optional. Exclude files that have these extensions. With dot!"
     )
     exclude_keywords: Set[str] = pydantic.Field(
         default_factory=set,
@@ -48,7 +49,7 @@ class TargetConfig(pydantic.BaseModel):
         description="Optional. Minimum time in seconds that passed since file modification to consider it as match.",
     )
     min_age_s: Optional[int] = pydantic.Field(
-        None,
+        default=None,
         ge=0,
         description="Optional. Any additional variables to pass into command template. Will override all other built-in variables.",
     )
@@ -123,6 +124,9 @@ def build_rendered_target_configs(config: Config) -> List[RenderedTargetConfig]:
             for preset_name in target.presets
         ]
 
-        result.append(RenderedTargetConfig(name=target_name, presets=presets, **target.model_dump()))
+        args = target.model_dump()
+        args["presets"] = presets
+
+        result.append(RenderedTargetConfig(name=target_name, **args))
 
     return result

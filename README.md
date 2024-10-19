@@ -59,11 +59,11 @@ targets:
   move_docs:
     # Required. Pattern for file matching. Supports standard globbing syntax like *, ?, **
     glob: /docs_landing/*
-    # Optional. ONLY match files with these extensions.
+    # Optional. ONLY match files with these extensions. With dot!
     include_ext:
       - .txt
       - .doc
-    # Optional. Exclude files that have these extensions.
+    # Optional. Exclude files that have these extensions. With dot!
     exclude_ext:
       - .mp4
     # Optional. Exclude files that have these keywords in their name (case-insensitive)

@@ -47,6 +47,9 @@ def get_target_matches(target: RenderedTargetConfig) -> Iterator[Path]:
     for match in glob.iglob(target.glob, recursive=True):
         path = Path(match)
 
+        if not path.is_file() or not path.exists():
+            continue
+
         if target.include_ext and path.suffix.lower() not in target.include_ext:
             logger.debug(f"{target.name} Skipping {path}, not in include_ext")
             continue
@@ -55,10 +58,15 @@ def get_target_matches(target: RenderedTargetConfig) -> Iterator[Path]:
             logger.debug(f"{target.name} Skipping {path}, in exclude_ext")
             continue
 
+        exclude_keyword = False
         for keyword in target.exclude_keywords:
-            if re.match(keyword, str(path.name), re.IGNORECASE):
+            if re.search(keyword, str(path.name), re.IGNORECASE):
                 logger.debug(f'{target.name} Skipping {path}, contains "{keyword}" from exclude_keywords')
-                continue
+                exclude_keyword = True
+                break
+
+        if exclude_keyword:
+            continue
 
         stat = path.stat()
 
