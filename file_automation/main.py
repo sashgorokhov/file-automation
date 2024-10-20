@@ -168,7 +168,7 @@ def cli(argv: List[str]):
     parser.add_argument(
         "-c",
         "--config",
-        type=str,
+        type=Path,
         help=f"Optional. Specify path to yaml config file. Can also use env {CONFIG_ENV_VAR}",
     )
     parser.add_argument(
