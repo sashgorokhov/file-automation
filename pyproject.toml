@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "File Automation - run templated shell commands for each file matched by pattern."
 authors = ["Alexander Gorokhov <sashgorokhov@gmail.com>"]
 readme = "README.md"
+packages = [{include = "file_automation"}]
 
 [tool.poetry.dependencies]
 python = ">=3.8"
