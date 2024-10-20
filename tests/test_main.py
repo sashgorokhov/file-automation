@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
+from pathlib import Path
 
 import pytest
 
@@ -32,7 +33,7 @@ def test_get_templating_context(tmp_path):
     assert context["target"] == "test_target"
     assert context["var1"] == "var1"
     assert context["var2"] == "var2"
-    assert context["output_path"] == r"foo\test_preset.howdy"
+    assert context["output_path"] == str(Path("foo/test_preset.howdy"))  # this is needed for linux/windows paths
 
 
 @pytest.mark.parametrize(
