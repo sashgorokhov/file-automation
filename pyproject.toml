@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "file-automation"
-version = "0.1.0"
+version = "0.1.1"
 description = "File Automation - run templated shell commands for each file matched by pattern."
 authors = ["Alexander Gorokhov <sashgorokhov@gmail.com>"]
 readme = "README.md"
