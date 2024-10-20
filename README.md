@@ -1,6 +1,6 @@
 # File Automation
 
-[![Test and build](https://github.com/sashgorokhov/file_automation/actions/workflows/test_and_build.yml/badge.svg?branch=main)](https://github.com/sashgorokhov/file-automation/actions/workflows/test_and_build.yml)
+[![Test and build](https://github.com/sashgorokhov/file-automation/actions/workflows/test_and_build.yml/badge.svg?branch=main)](https://github.com/sashgorokhov/file-automation/actions/workflows/test_and_build.yml)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/sashgorokhov/file-automation/main)
 
