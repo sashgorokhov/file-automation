@@ -44,7 +44,13 @@ def get_target_matches(target: RenderedTargetConfig) -> Iterator[Path]:
     """
     Return list of absolute file paths that are matched by target
     """
-    for match in glob.iglob(target.glob, recursive=True):
+    try:
+        matches = list(glob.iglob(target.glob, recursive=True))
+    except:
+        logger.exception(f'Cannot list files for target {target.name} - "{target.glob}"')
+        return
+
+    for match in matches:
         path = Path(match)
 
         if not path.is_file() or not path.exists():
